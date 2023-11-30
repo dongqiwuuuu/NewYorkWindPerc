@@ -19,9 +19,17 @@ Moreover, the inclusion of data from 312 observation stations across New York en
 Additionally, the dataset's up-to-date time series data is crucial for our investigation into the temporal variations and trends of temperature and precipitation. By analyzing this data, we can uncover how these patterns evolve over the course of the year, offering a window into the seasonal shifts and long-term trends in weather conditions. Overall, this dataset serves as a vital tool in our quest to unravel the intricate relationships between precipitation, temperature, and wind and their implications on a regional and temporal scale.
 
 ## Missing value analysis
+
+```{r,warning=FALSE,message=FALSE}
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
 ```{r}
 #Data Cleaning
-rawdata <- read.csv("C:\\Users\\dongqi\\NY_wind_percip_raw.csv")
+# rawdata <- read.csv("C:\\Users\\dongqi\\NY_wind_percip_raw.csv")
+rawdata <- read.csv("C:\\Users\\Qi Liu\\Desktop\\STAT 5702 EDAV\\Final_Project\\NewYorkWindPerc\\NY_wind_percip_raw.csv")
 #olnames(rawdata)
 #Only keeping columns associated with wind, precipitation, and temperature. 
 data <- rawdata %>% select("TAVG", "TMAX", "TMIN", "TOBS", "DAPR", "MDPR", "PRCP", "SNOW", "SNWD", "AWND", "PGTM", "WDF2", "WDF5", "DATE","NAME")
