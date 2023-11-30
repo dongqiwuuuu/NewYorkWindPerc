@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>YOUR PROJECT TITLE - 2&nbsp; Data</title>
+<title>Exploritory Analysis of NY Percipitation and Wind - 2&nbsp; Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -88,9 +88,9 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">YOUR PROJECT TITLE</a> 
+      <a href="./">Exploritory Analysis of NY Percipitation and Wind</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/dongqiwuuuu/NewYorkWindPerc.git" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
     </div>
       </div>
@@ -144,7 +144,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">2.1</span> Description</a></li>
   <li><a href="#missing-value-analysis" id="toc-missing-value-analysis" class="nav-link" data-scroll-target="#missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/edit/main/data.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dongqiwuuuu/NewYorkWindPerc.git/edit/main/data.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/dongqiwuuuu/NewYorkWindPerc.git/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -166,6 +166,12 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<p>For our research project, we choose to use Global Historical Climatology Network (GHCN)-Daily Dataset. It is a composite dataset comprising climate records from numerous sources worldwide. These records are merged and subjected to quality assurance reviews. The dataset is maintained by the National Oceanic and Atmospheric Administration (NOAA).</p>
+<p>The data we get from NOAA data source is in csv format. The data is distributed typically with one row per observation, indicating one observation per day. We choose to use the date range between 2023-01-01 to 2023-11-27 for analysis of the most current trend in atmosphere. Updates of the dataset are made in either several days or a week, ensuring a near-real-time data feed.</p>
+<p>For the coverage of the dataset, it includes over 40 meteorological elements such as temperature extremes, precipitation, wind speed, and direction. Within our choice of range, it includes 312 stations for observations, which allows for later analysis on geographical comparisons.</p>
+<p>Potential issues might include varying data quality and completeness across stations and time periods. For our purpose of research, there does exist some missing data in some of the targeted columns, and therefore needs further filtering and processes to deal with.</p>
+<p>For importing data, we choose to import the csv file we got from the NOAA source into R using standard data reading functions like read.csv().</p>
+<p>Data Link: https://www.ncei.noaa.gov/cdo-web/datasets/GHCND/locations/CITY:US360019/detail</p>
 <section id="description" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="description"><span class="header-section-number">2.1</span> Description</h2>
 </section>
