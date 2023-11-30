@@ -3,3 +3,74 @@
 ## Description
 
 ## Missing value analysis
+```{r}
+#Data Cleaning
+rawdata <- read.csv("C:\\Users\\dongqi\\NY_wind_percip_raw.csv")
+#olnames(rawdata)
+#Only keeping columns associated with wind, precipitation, and temperature. 
+data <- rawdata %>% select("TAVG", "TMAX", "TMIN", "TOBS", "DAPR", "MDPR", "PRCP", "SNOW", "SNWD", "AWND", "PGTM", "WDF2", "WDF5", "DATE","NAME")
+```
+```{r}
+#Missing value analysis
+# Counting missing values in each column
+missing_values <- sapply(data, function(x) sum(is.na(x)))
+missing_values
+# Calculating the percentage of missing values in each column
+total_rows <- nrow(data)
+missing_percentage <- sapply(data, function(x) sum(is.na(x)) / total_rows * 100)
+
+# Creating a data frame for plotting
+missing_percentage_df <- data.frame(Column = names(missing_percentage), MissingPercentage = missing_percentage)
+missing_percentage_df <- missing_percentage_df[order(-missing_percentage_df$MissingPercentage),]
+
+```
+
+```{r}
+#Missing Data Bar Chart
+ggplot(missing_percentage_df, aes(x = reorder(Column, -MissingPercentage), y = MissingPercentage)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("Columns") +
+  ylab("Percentage of Missing Data") +
+  ggtitle("Percentage of Missing Data in Each Category")
+```
+In our comprehensive review of the dataset, it's evident that it is markedly sparse, with a substantial proportion of missing values across various features. Notably, the majority of the features exhibit more than 80% missing data. Exceptions to this trend include key weather parameters such as maximum temperature, minimum temperature, snow depth, snowfall, and precipitation, which maintain more complete records.
+```{r}
+# Convert 'DATE' column to Date type
+data$DATE <- as.Date(data$DATE, "%Y/%m/%d")
+
+# Extracting the year and month and converting to Date
+data$YearMonth <- as.Date(paste(year(data$DATE), month(data$DATE), "01", sep = "-"), "%Y-%m-%d")
+
+# Reshaping the data to long format
+data_long <- gather(data, key = "Category", value = "Value", -DATE, -YearMonth)
+
+# Counting missing values by month
+missing_by_month <- aggregate(is.na(data_long$Value) ~ data_long$YearMonth, data = data_long, sum)
+names(missing_by_month) <- c("YearMonth", "MissingValues")
+
+# Time series plot aggregated by month
+ggplot(missing_by_month, aes(x = YearMonth, y = MissingValues)) +
+  geom_line() +
+  scale_x_date(date_breaks = "1 month", date_labels = "%Y-%m") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("Year-Month") +
+  ylab("Number of Missing Values") +
+  ggtitle("Monthly Missing Data Over Time")
+```
+Our analysis, particularly the monthly overview of missing values throughout 2023, indicates a consistent pattern of data absence, excluding November. We've discounted November's data in our analysis due to incomplete data upload. A notable deviation from this trend appears in February, where there's a marked decrease in missing values. The reasons for this anomaly could be manifold, including possible changes in data collection protocols or environmental factors impacting data availability.
+```{r}
+#Percentage of missing data for each city
+data_long <- gather(data, key = "Category", value = "Value", -NAME)
+
+# Calculating the total number of missing values for each city
+missing_by_city <- data_long %>% 
+  group_by(NAME) %>% 
+  summarise(TotalMissing = sum(is.na(Value))) %>%
+  arrange(TotalMissing) %>%
+  top_n(-5) # Selects the top 5 cities with the least missing values
+missing_by_city
+```
+Given the extensive data gaps, it's challenging to conduct a comprehensive exploratory analysis for the entire state of New York. This issue is particularly pronounced when attempting to explore correlations, such as between wind and precipitation, where data is notably lacking. Consequently, to enhance the robustness of our analysis, we've decided to narrow our focus.
+
+We've identified five regions with the most complete datasets, which are pivotal for a more reliable and detailed examination. These regions include Paterson, River Vale, Kinnelon, Westfield, and Floral Park. By concentrating on these areas, we aim to mitigate the impact of widespread data gaps and garner more insightful, accurate conclusions about weather patterns and their implications in these specific locales.
