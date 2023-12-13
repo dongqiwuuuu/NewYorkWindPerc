@@ -1,16 +1,53 @@
 # Results
 
+```{r}
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
 ##Data Proprocessing
 ```{r}
 #Data Cleansing
 rawdata <- read.csv("C:\\Users\\dongqi\\NY_wind_percip_raw.csv")
 data <- rawdata %>% select("TAVG", "TMAX", "TMIN", "TOBS", "DAPR", "MDPR", "PRCP", "SNOW", "SNWD", "AWND", "PGTM", "WDF2", "WDF5", "DATE","NAME")
+write.csv(data, "NY_wind_percip.csv")
+```
+
+```{r}
+#Select cities with more complete data
+# Filter out cities that don't appear at least 90 times
+filtered_data_90 <- data %>%
+  group_by(NAME) %>%
+  filter(n() >= 90)
+
+#Percentage of missing data for each city
+data_long <- gather(filtered_data_90, key = "Category", value = "Value", -NAME)
+
+# Calculating the total number of missing values for each city
+missing_by_city <- data_long %>% 
+  group_by(NAME) %>% 
+  summarise(TotalMissing = sum(is.na(Value))) %>%
+  arrange(TotalMissing) %>%
+  top_n(-5) # Selects the top 5 cities with the least missing values
+missing_by_city #This is the location we will prioritize to analyze upon
+
+# Extract the names of the top 5 cities
+top_5_city_names <- missing_by_city$NAME
+
+# Filter the data for only these top 5 cities
+data_top5 <- data %>%
+  filter(NAME %in% top_5_city_names)
+# View the filtered data
+write.csv(data_top5, "NY_wind_percip_top5cities.csv")
+data_top5
 
 ```
 
 
 ```{r}
-#Aggregated on one Month
+#Aggregated on one Month with least NA
 ```
 
 
