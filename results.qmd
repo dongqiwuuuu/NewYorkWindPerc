@@ -10,50 +10,42 @@ library(tidyr)
 ##Data Proprocessing
 ```{r}
 #Data Cleansing
-rawdata <- read.csv("C:\\Users\\dongqi\\NY_wind_percip_raw.csv")
-data <- rawdata %>% select("TAVG", "TMAX", "TMIN", "TOBS", "DAPR", "MDPR", "PRCP", "SNOW", "SNWD", "AWND", "PGTM", "WDF2", "WDF5", "DATE","NAME")
-write.csv(data, "NY_wind_percip.csv")
+data_top5 <- read.csv("NY_wind_percip_top5cities.csv")
 ```
 
+##Airport Precipitation Trends
 ```{r}
-#Select cities with more complete data
-# Filter out cities that don't appear at least 90 times
-filtered_data_90 <- data %>%
-  group_by(NAME) %>%
-  filter(n() >= 90)
+Line_data <- data_top5 %>%
+  filter(NAME %in% c("LAGUARDIA AIRPORT, NY US", "NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US", "JFK INTERNATIONAL AIRPORT, NY US"))
 
-#Percentage of missing data for each city
-data_long <- gather(filtered_data_90, key = "Category", value = "Value", -NAME)
+Line_data$DATE <- as.Date(Line_data$DATE)
 
-# Calculating the total number of missing values for each city
-missing_by_city <- data_long %>% 
-  group_by(NAME) %>% 
-  summarise(TotalMissing = sum(is.na(Value))) %>%
-  arrange(TotalMissing) %>%
-  top_n(-5) # Selects the top 5 cities with the least missing values
-missing_by_city #This is the location we will prioritize to analyze upon
+# Group by airport and month, then calculate the monthly average
+monthly_avg <- Line_data %>%
+  group_by(NAME, Month = floor_date(DATE, "month")) %>%
+  summarise(AvgPRCP = mean(PRCP, na.rm = TRUE))
 
-# Extract the names of the top 5 cities
-top_5_city_names <- missing_by_city$NAME
-
-# Filter the data for only these top 5 cities
-data_top5 <- data %>%
-  filter(NAME %in% top_5_city_names)
-# View the filtered data
-write.csv(data_top5, "NY_wind_percip_top5cities.csv")
-data_top5
-
+# Plotting
+ggplot(monthly_avg, aes(x = Month, y = AvgPRCP)) + 
+  geom_line() + 
+  geom_smooth(method = "loess", se = FALSE, span = 0.8) +
+  facet_wrap(~ NAME, scales = "fixed", nrow = 3) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  theme_minimal() +
+  labs(title = "Monthly Average Precipitation for Three Airports",
+       x = "Month",
+       y = "Average Precipitation",
+       color = "Airport") +
+  theme(legend.position = "none")
 ```
-
-
-```{r}
-#Aggregated on one Month with least NA
-```
-
-
-##CityWise Precipitation Trends
+Trends in the above graph: 
 
 ##Slope Graph
+```{r}
+
+```
+
+
 
 ##Heatmap
 

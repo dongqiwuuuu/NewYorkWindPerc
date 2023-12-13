@@ -84,8 +84,14 @@ ggplot(missing_by_month, aes(x = YearMonth, y = MissingValues)) +
 ```
 Our analysis, particularly the monthly overview of missing values throughout 2023, indicates a consistent pattern of data absence, excluding November. We've discounted November's data in our analysis due to incomplete data upload. A notable deviation from this trend appears in February, where there's a marked decrease in missing values. The reasons for this anomaly could be manifold, including possible changes in data collection protocols or environmental factors impacting data availability.
 ```{r}
+#Select cities with more complete data
+# Filter out cities that don't appear at least 90 times
+filtered_data_90 <- data %>%
+  group_by(NAME) %>%
+  filter(n() >= 90)
+
 #Percentage of missing data for each city
-data_long <- gather(data, key = "Category", value = "Value", -NAME)
+data_long <- gather(filtered_data_90, key = "Category", value = "Value", -NAME)
 
 # Calculating the total number of missing values for each city
 missing_by_city <- data_long %>% 
@@ -93,8 +99,16 @@ missing_by_city <- data_long %>%
   summarise(TotalMissing = sum(is.na(Value))) %>%
   arrange(TotalMissing) %>%
   top_n(-5) # Selects the top 5 cities with the least missing values
-missing_by_city
+missing_by_city #This is the location we will prioritize to analyze upon
+
+# Extract the names of the top 5 cities
+top_5_city_names <- missing_by_city$NAME
+
+# Filter the data for only these top 5 cities
+data_top5 <- data %>%
+  filter(NAME %in% top_5_city_names)
+write.csv(data_top5, "NY_wind_percip_top5cities.csv")
 ```
 Given the extensive data gaps, it's challenging to conduct a comprehensive exploratory analysis for the entire state of New York. This issue is particularly pronounced when attempting to explore correlations, such as between wind and precipitation, where data is notably lacking. Consequently, to enhance the robustness of our analysis, we've decided to narrow our focus.
 
-We've identified five regions with the most complete datasets, which are pivotal for a more reliable and detailed examination. These regions include Paterson, River Vale, Kinnelon, Westfield, and Floral Park. By concentrating on these areas, we aim to mitigate the impact of widespread data gaps and garner more insightful, accurate conclusions about weather patterns and their implications in these specific locales.
+We've identified five regions with the most complete datasets, which are pivotal for a more reliable and detailed examination. These regions include Canoe Brook, Boonton, LaGuardia Airport, Newark Liberty International Airport, and JFK International Airport. Among these regions, the airport data are the most complete, and it makes more sense to do a direct comparison between different airports in New York City instead of comparing the airport and a random city. By concentrating on Airports, we aim to mitigate the impact of widespread data gaps and garner more insightful, accurate conclusions about weather patterns and their implications.
