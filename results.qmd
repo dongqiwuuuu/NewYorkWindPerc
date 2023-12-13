@@ -1,1 +1,32 @@
 # Results
+
+##Data Proprocessing
+```{r}
+#Data Cleansing
+rawdata <- read.csv("C:\\Users\\dongqi\\NY_wind_percip_raw.csv")
+data <- rawdata %>% select("TAVG", "TMAX", "TMIN", "TOBS", "DAPR", "MDPR", "PRCP", "SNOW", "SNWD", "AWND", "PGTM", "WDF2", "WDF5", "DATE","NAME")
+
+```
+
+
+```{r}
+#Aggregated on one Month
+```
+
+
+##CityWise Precipitation Trends
+
+##Slope Graph
+
+##Heatmap
+
+
+
+
+##Scatterplot Matrix
+
+##Mosaic
+
+##Multiple Box-Plot
+
+##Ridgeline
