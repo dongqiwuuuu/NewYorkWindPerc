@@ -9,7 +9,7 @@
 <div id="plot">
 </div>
 
-#Through the above animation is a changing histogram showing how distribution of wind speed changes from month to month. It provide a more convinent way of directly comparing distributions. 
+#The above animation is a changing histogram showing how distribution of wind speed changes from month to month. It provide a more convinent way of directly comparing distributions over time. The overall distribution matches with our previous analysis where the wind speed is mainly right skewed. 
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="scripts/myscript.js"></script>

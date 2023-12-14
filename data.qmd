@@ -1,4 +1,4 @@
-# Data
+# Technical description
 For our research project, we choose to use Global Historical Climatology Network (GHCN)-Daily Dataset. It is a composite dataset comprising climate records from numerous sources worldwide. These records are merged and subjected to quality assurance reviews. The dataset is maintained by the National Oceanic and Atmospheric Administration (NOAA). 
 
 The data we get from NOAA data source is in csv format. The data is distributed typically with one row per observation, indicating one observation per day. We choose to use the date range between 2023-01-01 to 2023-11-27 for analysis of the most current trend in atmosphere. Updates of the dataset are made in either several days or a week, ensuring a near-real-time data feed. 
@@ -11,10 +11,10 @@ For importing data, we choose to import the csv file we got from the NOAA source
 
 Data Link: https://www.ncei.noaa.gov/cdo-web/datasets/GHCND/locations/CITY:US360019/detail
 
-## Description
+## Research plan
 Our dataset, encompassing over 40 diverse meteorological elements such as temperature extremes, precipitation, wind speed, and direction, offers a comprehensive platform for examining the interactions between these various weather components. Specifically, we aim to delve into how wind conditions correlate with patterns of precipitation and temperature changes. This exploration is expected to yield insights into the complex dynamics that govern weather systems. 
 
-Moreover, the inclusion of data from 312 observation stations across New York enhances the depth of our study by enabling regional comparisons. This aspect is particularly valuable as it allows us to analyze how precipitation trends and wind patterns differ across various locations, thereby providing a more nuanced understanding of regional climatic behaviors.
+Moreover, the inclusion of data from 312 observation stations across New York enhances the depth of our study by enabling regional comparisons. This aspect is particularly valuable as it allows us to analyze how precipitation trends and wind patterns differ across various locations, thereby providing a more nuanced understanding of regional climatic behaviors. Specifically, we are focusing on the three airports near New York. 
 
 Additionally, the dataset's up-to-date time series data is crucial for our investigation into the temporal variations and trends of temperature and precipitation. By analyzing this data, we can uncover how these patterns evolve over the course of the year, offering a window into the seasonal shifts and long-term trends in weather conditions. Overall, this dataset serves as a vital tool in our quest to unravel the intricate relationships between precipitation, temperature, and wind and their implications on a regional and temporal scale.
 
