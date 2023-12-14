@@ -162,7 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">conclusion.html</span></span></a>
   </div>
 </li>
     </ul>
@@ -308,8 +308,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Percentage of missing data for each city</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>data_long <span class="ot">&lt;-</span> <span class="fu">gather</span>(data, <span class="at">key =</span> <span class="st">"Category"</span>, <span class="at">value =</span> <span class="st">"Value"</span>, <span class="sc">-</span>NAME)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Select cities with more complete data</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out cities that don't appear at least 90 times</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>filtered_data_90 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(NAME) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">n</span>() <span class="sc">&gt;=</span> <span class="dv">90</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Percentage of missing data for each city</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>data_long <span class="ot">&lt;-</span> <span class="fu">gather</span>(filtered_data_90, <span class="at">key =</span> <span class="st">"Category"</span>, <span class="at">value =</span> <span class="st">"Value"</span>, <span class="sc">-</span>NAME)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: attributes are not identical across measure variables; they will be
@@ -329,21 +335,31 @@ dropped</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>missing_by_city</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>missing_by_city <span class="co">#This is the location we will prioritize to analyze upon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
-  NAME                        TotalMissing
-  &lt;chr&gt;                              &lt;int&gt;
-1 PATERSON 2.0 W, NJ US                 12
-2 RIVER VALE TWP 1.5 S, NJ US           12
-3 KINNELON 1.4 SE, NJ US                33
-4 WESTFIELD 0.7 SSE, NJ US             182
-5 FLORAL PARK 0.4 W, NY US             256</code></pre>
+  NAME                                        TotalMissing
+  &lt;chr&gt;                                              &lt;int&gt;
+1 CANOE BROOK, NJ US                                   942
+2 BOONTON 0.7 WSW, NJ US                              1205
+3 LAGUARDIA AIRPORT, NY US                            1299
+4 NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US         1300
+5 JFK INTERNATIONAL AIRPORT, NY US                    1301</code></pre>
 </div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the names of the top 5 cities</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>top_5_city_names <span class="ot">&lt;-</span> missing_by_city<span class="sc">$</span>NAME</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the data for only these top 5 cities</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>data_top5 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(NAME <span class="sc">%in%</span> top_5_city_names)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(data_top5, <span class="st">"NY_wind_percip_top5cities.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Given the extensive data gaps, it’s challenging to conduct a comprehensive exploratory analysis for the entire state of New York. This issue is particularly pronounced when attempting to explore correlations, such as between wind and precipitation, where data is notably lacking. Consequently, to enhance the robustness of our analysis, we’ve decided to narrow our focus.</p>
-<p>We’ve identified five regions with the most complete datasets, which are pivotal for a more reliable and detailed examination. These regions include Paterson, River Vale, Kinnelon, Westfield, and Floral Park. By concentrating on these areas, we aim to mitigate the impact of widespread data gaps and garner more insightful, accurate conclusions about weather patterns and their implications in these specific locales.</p>
+<p>We’ve identified five regions with the most complete datasets, which are pivotal for a more reliable and detailed examination. These regions include Canoe Brook, Boonton, LaGuardia Airport, Newark Liberty International Airport, and JFK International Airport. Among these regions, the airport data are the most complete, and it makes more sense to do a direct comparison between different airports in New York City instead of comparing the airport and a random city. By concentrating on Airports, we aim to mitigate the impact of widespread data gaps and garner more insightful, accurate conclusions about weather patterns and their implications.</p>
 
 
 </section>

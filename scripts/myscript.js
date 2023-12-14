@@ -12,7 +12,7 @@
       .attr("height", h);
 
 // Load the data from the CSV file
-d3.csv("NY_wind_percip_top5cities.csv", function(data) {
+d3.csv("https://raw.githubusercontent.com/dongqiwuuuu/NewYorkWindPerc/NY_wind_percip_top5cities.csv", function(data) {
 
   // Filter data for Newark airport
   var newarkData = data.filter(function(d) {
