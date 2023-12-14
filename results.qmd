@@ -42,7 +42,9 @@ Trends in the above graph:
 
 ##Slope Graph
 ```{r}
-
+#Branching Experiement
+Slope_data <- data_top5 %>%
+  filter(NAME %in% c("LAGUARDIA AIRPORT, NY US", "NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US", "JFK INTERNATIONAL AIRPORT, NY US"))
 ```
 
 
