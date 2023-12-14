@@ -1,10 +1,11 @@
 # Results
 
-```{r}
+```{r,warning=FALSE,message=FALSE}
 library(lubridate)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
+library(GGally)
 ```
 
 ##Data Proprocessing
@@ -24,7 +25,6 @@ Line_data$DATE <- as.Date(Line_data$DATE)
 monthly_avg <- Line_data %>%
   group_by(NAME, Month = floor_date(DATE, "month")) %>%
   summarise(AvgPRCP = mean(PRCP, na.rm = TRUE))
-
 # Plotting
 ggplot(monthly_avg, aes(x = Month, y = AvgPRCP)) + 
   geom_line() + 
@@ -45,12 +45,76 @@ Trends in the above graph:
 #Branching Experiement
 Slope_data <- data_top5 %>%
   filter(NAME %in% c("LAGUARDIA AIRPORT, NY US", "NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US", "JFK INTERNATIONAL AIRPORT, NY US"))
+
+# Group by airport and month, then calculate the monthly average
+monthly_avg <- Line_data %>%
+  group_by(NAME, Month = floor_date(DATE, "month")) %>%
+  summarise(MonthlyPrec = mean(PRCP, na.rm = TRUE), MonthlyWindSpeed = mean(AWND, na.rm = TRUE), MonthlyTempreture= mean(TAVG, na.rm = TRUE))
+
+ggparcoord(monthly_avg, columns=3:5, scale="uniminmax", groupColumn = "NAME") +
+  scale_color_discrete(name = "Airport") +
+  theme_minimal() +
+  labs(title = "Monthly Averages of Wind Speed, Precipitation, and Temperature",
+       x = "Variables",
+       y = "Normalized Values") +
+  theme(legend.position = "bottom")
+
 ```
 
-
-
 ##Heatmap
+```{r, fig.width=5, fig.height=9}
+# Precipitation VS Wind Speed
+Heat_data <- data_top5 %>%
+  filter(NAME %in% c("LAGUARDIA AIRPORT, NY US", "NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US", "JFK INTERNATIONAL AIRPORT, NY US"))
 
+# Binning the PRCP and AWND data
+Heat_data$Binned_PRCP <- cut(Heat_data$PRCP, breaks = 10)
+Heat_data$Binned_AWND <- cut(Heat_data$AWND, breaks = 10)
+
+# Creating a new data frame for the heatmap
+heatmap_data <- Heat_data %>%
+  group_by(NAME, Binned_PRCP, Binned_AWND) %>%
+  summarise(Frequency = n(), .groups = 'drop')  # Counting occurrences
+
+# Plotting the heatmap
+ggplot(heatmap_data, aes(x = Binned_AWND, y = Binned_PRCP, fill = Frequency)) +
+  geom_tile() +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  facet_wrap(~ NAME, scales = "free", nrow = 3) +
+  labs(title = "Precipitation vs Wind Speed for Three Airports",
+       y = "Binned Precipitation (PRCP)",
+       x = "Binned Wind Speed (AWND)",
+       fill = "Frequency") +
+  theme_minimal() +
+  theme(legend.position = "right", 
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r, fig.width=5, fig.height=9}
+# Precipitation VS Temperature
+
+# Binning the PRCP and TAVG data
+Heat_data$Binned_PRCP <- cut(Heat_data$PRCP, breaks = 10)
+Heat_data$Binned_TAVG <- cut(Heat_data$TAVG, breaks = 10)
+
+# Creating a new data frame for the heatmap
+heatmap_data <- Heat_data %>%
+  group_by(NAME, Binned_PRCP, Binned_TAVG) %>%
+  summarise(Frequency = n(), .groups = 'drop')  # Counting occurrences
+
+# Plotting the heatmap
+ggplot(heatmap_data, aes(x = Binned_TAVG, y = Binned_PRCP, fill = Frequency)) +
+  geom_tile() +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  facet_wrap(~ NAME, scales = "free", nrow = 3) +
+  labs(title = "Precipitation vs Temperature for Three Airports",
+       y = "Binned Precipitation (PRCP)",
+       x = "Binned Temperature (TAVG)",
+       fill = "Frequency") +
+  theme_minimal() +
+  theme(legend.position = "right", 
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 
 
