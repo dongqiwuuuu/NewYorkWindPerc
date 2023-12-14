@@ -1,0 +1,10 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+data_top5 <- read.csv("NY_wind_percip_top5cities.csv")
+
+```
