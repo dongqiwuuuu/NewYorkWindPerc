@@ -122,52 +122,7 @@ ggplot(heatmap_data, aes(x = Binned_TAVG, y = Binned_PRCP, fill = Frequency)) +
 ```
 The heatmap between temperature and Precipitation across all three airport showed similar distribution patterns. Generally, lower levels of precipitation are common across various temperature ranges. We see that the frequency of occurrences generally decreases as precipitation increases, regardless of temperature.
 
-
-# Plotting the heatmap
-ggplot(heatmap_data, aes(x = Binned_AWND, y = Binned_PRCP, fill = Frequency)) +
-  geom_tile() +
-  scale_fill_gradient(low = "lightblue", high = "darkblue") +
-  facet_wrap(~ NAME, scales = "free", nrow = 3) +
-  labs(title = "Precipitation vs Wind Speed for Three Airports",
-       y = "Binned Precipitation (PRCP)",
-       x = "Binned Wind Speed (AWND)",
-       fill = "Frequency") +
-  theme_minimal() +
-  theme(legend.position = "right", 
-        axis.text.x = element_text(angle = 45, hjust = 1))
-```
-The above heatmap shows the distribution of Wind Speed and Precipitation. The most frequent occurrences (darkest shade) appear in the lower bins of both wind speed and precipitation, suggesting that lower wind speeds and lower precipitation amounts are most common across all three airports. There are noticeable frequencies in higher wind speed bins (around 16.8-19.1) for the JFK International Airport, independent of precipitation levels, indicating occasional higher wind speeds regardless of rainfall. In contrast, frequencies in high wind speed of Laguardia airport and Newark Airport is low. 
- 
-```{r, fig.width=5, fig.height=9}
-# Precipitation VS Temperature
-
-# Binning the PRCP and TAVG data
-Heat_data$Binned_PRCP <- cut(Heat_data$PRCP, breaks = 10)
-Heat_data$Binned_TAVG <- cut(Heat_data$TAVG, breaks = 10)
-
-# Creating a new data frame for the heatmap
-heatmap_data <- Heat_data %>%
-  group_by(NAME, Binned_PRCP, Binned_TAVG) %>%
-  summarise(Frequency = n(), .groups = 'drop')  # Counting occurrences
-
-# Plotting the heatmap
-ggplot(heatmap_data, aes(x = Binned_TAVG, y = Binned_PRCP, fill = Frequency)) +
-  geom_tile() +
-  scale_fill_gradient(low = "lightblue", high = "darkblue") +
-  facet_wrap(~ NAME, scales = "free", nrow = 3) +
-  labs(title = "Precipitation vs Temperature for Three Airports",
-       y = "Binned Precipitation (PRCP)",
-       x = "Binned Temperature (TAVG)",
-       fill = "Frequency") +
-  theme_minimal() +
-  theme(legend.position = "right", 
-        axis.text.x = element_text(angle = 45, hjust = 1))
-```
-The heatmap between temperature and Precipitation across all three airport showed similar distribution patterns. Generally, lower levels of precipitation are common across various temperature ranges. We see that the frequency of occurrences generally decreases as precipitation increases, regardless of temperature.
-
 From this analysis, there is no clear pattern to suggest a strong correlation between temperature and precipitation; instead, each variable seems to vary independently.
-
-There is no clear pattern to suggest a strong correlation between temperature and precipitation; instead, each variable seems to vary independently.
 
 
 ##Scatterplot Matrix
