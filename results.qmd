@@ -14,7 +14,7 @@ library(GGally)
 data_top5 <- read.csv("NY_wind_percip_top5cities.csv")
 ```
 
-##Airport Precipitation Trends
+##Airport Precipitation Monthly Trends
 ```{r}
 Line_data <- data_top5 %>%
   filter(NAME %in% c("LAGUARDIA AIRPORT, NY US", "NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US", "JFK INTERNATIONAL AIRPORT, NY US"))
@@ -38,11 +38,12 @@ ggplot(monthly_avg, aes(x = Month, y = AvgPRCP)) +
        color = "Airport") +
   theme(legend.position = "none")
 ```
-Trends in the above graph: 
+We are interested in comparing the general monthly precipitation trends of the three airports near New York City. The line graph shows similar patterns between the different airports, which is expected given their geographical proximity. These trends align with the historical weather patterns in the region, where the rainy season in New York typically starts in April and continues until June. However, we can still spot abnormal trends in the graph. Notably, there is a peak in precipitation in September at all three locations, which is usually outside the typical rainy season in New York. These observations align with news reports indicating that the total rainfall in September was the second highest in over 150 years in New York.
 
-##Slope Graph
+Apart from the general precipitation pattern, there are slight variations in the trends between the different airports. With other months being roughly equal, precipitation in September at Newark Airport is significantly lower than at the other two airports. This difference could be attributed to the distinct geographic locations of the airports. LaGuardia and JFK are situated on the same peninsula, unlike Newark, which could account for the disparities in precipitation patterns.
+
+##Relationship between Precipitation, Wind, and Temperature
 ```{r}
-#Branching Experiement
 Slope_data <- data_top5 %>%
   filter(NAME %in% c("LAGUARDIA AIRPORT, NY US", "NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US", "JFK INTERNATIONAL AIRPORT, NY US"))
 
@@ -60,8 +61,10 @@ ggparcoord(monthly_avg, columns=3:5, scale="uniminmax", groupColumn = "NAME") +
   theme(legend.position = "bottom")
 
 ```
+Our primary interest in this New York weather dataset is to explore how wind speed and temperature correlate with precipitation in different areas. The parallel coordinate graphs, grouped by the three airports, reveal distinct relationships between these three variables. Firstly, it's clear that after normalization, the monthly wind speed at Newark Airport shows a significant decrease compared to monthly precipitation, unlike the other two airports on Long Island Peninsula. The blue lines representing Newark in the graph for monthly wind speed are concentrated towards the bottom, whereas the red and green lines, representing LaGuardia and JFK, are more focused towards the top. This suggests that Newark is more likely to experience lower wind speeds for a given level of precipitation.
 
-##Heatmap
+The relationship between these variables for LaGuardia and JFK also differs slightly. Despite being geographically close, JFK often has slightly higher wind speeds for similar levels of precipitation. However, there is no distinct pattern observed between temperature and monthly precipitation. The lines for the temperature variable are mixed up, indicating a less clear relationship between temperature and precipitation at these locations.
+
 ```{r, fig.width=5, fig.height=9}
 # Precipitation VS Wind Speed
 Heat_data <- data_top5 %>%
@@ -89,7 +92,8 @@ ggplot(heatmap_data, aes(x = Binned_AWND, y = Binned_PRCP, fill = Frequency)) +
   theme(legend.position = "right", 
         axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-
+The above heatmap shows the distribution of Wind Speed and Precipitation. The most frequent occurrences (darkest shade) appear in the lower bins of both wind speed and precipitation, suggesting that lower wind speeds and lower precipitation amounts are most common across all three airports. There are noticeable frequencies in higher wind speed bins (around 16.8-19.1) for the JFK International Airport, independent of precipitation levels, indicating occasional higher wind speeds regardless of rainfall. In contrast, frequencies in high wind speed of Laguardia airport and Newark Airport is low. 
+ 
 ```{r, fig.width=5, fig.height=9}
 # Precipitation VS Temperature
 
@@ -115,7 +119,9 @@ ggplot(heatmap_data, aes(x = Binned_TAVG, y = Binned_PRCP, fill = Frequency)) +
   theme(legend.position = "right", 
         axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+The heatmap between temperature and Precipitation across all three airport showed similar distribution patterns. Generally, lower levels of precipitation are common across various temperature ranges. We see that the frequency of occurrences generally decreases as precipitation increases, regardless of temperature.
 
+There is no clear pattern to suggest a strong correlation between temperature and precipitation; instead, each variable seems to vary independently.
 
 ##Scatterplot Matrix
 ```{r}
