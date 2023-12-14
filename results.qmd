@@ -117,11 +117,100 @@ ggplot(heatmap_data, aes(x = Binned_TAVG, y = Binned_PRCP, fill = Frequency)) +
 ```
 
 
-
 ##Scatterplot Matrix
+```{r}
+sp_data <- data_top5 |> 
+  filter(NAME %in% c("LAGUARDIA AIRPORT, NY US", "NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US", "JFK INTERNATIONAL AIRPORT, NY US")) |> 
+  filter(!is.na(TAVG) & !is.na(PRCP) & !is.na(AWND)) |> 
+  dplyr::select(TAVG, PRCP, AWND, NAME) |> 
+  dplyr::rename(
+    "Temperature" = TAVG,
+    "Precipitation" = PRCP,
+    "WindSpeed" = AWND
+  )
+
+sp_jfk <- sp_data |> 
+  dplyr::filter(NAME == "JFK INTERNATIONAL AIRPORT, NY US") |> 
+  dplyr::select(Temperature, Precipitation, WindSpeed)
+plot(sp_jfk, pch = 16, cex = .3, main = "Scatterplot Matrix for JFK")
+
+sp_nwk <- sp_data |>
+  dplyr::filter(NAME == "NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US") |> 
+  dplyr::select(Temperature, Precipitation, WindSpeed)
+plot(sp_nwk, pch = 16, cex = .3, main = "Scatterplot Matrix for NWK")
+
+sp_lga <- sp_data |>
+  dplyr::filter(NAME == "LAGUARDIA AIRPORT, NY US") |> 
+  dplyr::select(Temperature, Precipitation, WindSpeed)
+plot(sp_lga, pch = 16, cex = .3, main = "Scatterplot Matrix for LGA")
+```
+Note that after filtering null values, the remaining airports having enough data for this task are just the following three airports: JFK, LGA and NWK. To compare against each other, we created separate scatter plot matrix, though they have similar distributions.
+From the alpha-blended scatter plot matrices of the three selected variables, we observe a potential tri-modal distribution between average temperature and precipitation. It appears that as the temperature increases, precipitation tends to peak in three distinct ranges. Conversely, the relationship between precipitation and average wind speed is less clear. Generally, lower levels of precipitation are observed at extreme wind speeds. However, there is no discernible correlation between average temperature and average wind speed, suggesting these variables may be independent of each other.
 
 ##Mosaic
+```{r}
+categorize_data <- function(data) {
+  data |> 
+    mutate(
+      Temperature = cut(Temperature, breaks = c(-Inf, 45, 55, 65, 75, Inf), labels = c("Very Cold", "Cold", "Mild", "Comfortable", "Hot")),
+      Precipitation = cut(Precipitation, breaks = c(-Inf, 0.1, 0.5, 1, Inf), labels = c("No Rain", "Light", "Moderate", "Heavy")),
+      WindSpeed = cut(WindSpeed, breaks = c(-Inf, 6, 12, Inf), labels = c("Calm", "Mild", "Windy"))
+    )
+}
+
+cat_jfk <- categorize_data(sp_jfk)
+cat_nwk <- categorize_data(sp_nwk)
+cat_lga <- categorize_data(sp_lga)
+
+
+mosaic(Precipitation ~ Temperature + WindSpeed, data = cat_jfk,  
+       direction = c("v", "v", "h"), main = "Combined Mosaic Plot for JFK", rot_labels=c(0,0,90,0), highlighting_fill=c("cyan","lightblue", "cornflowerblue", "navy"))
+
+mosaic(Precipitation ~ Temperature + WindSpeed, data = cat_nwk,  
+       direction = c("v", "v", "h"), main = "Combined Mosaic Plot for NWK", rot_labels=c(0,0,90,0), highlighting_fill=c("cyan","lightblue", "cornflowerblue", "navy"))
+
+mosaic(Precipitation ~ Temperature + WindSpeed, data = cat_lga,  
+       direction = c("v", "v", "h"), main = "Combined Mosaic Plot for LGA", rot_labels=c(0,0,90,0), highlighting_fill=c("cyan","lightblue", "cornflowerblue", "navy"))
+```
+In this analysis, we transformed the continuous variables into categorical ones by establishing specific thresholds. Precipitation was designated as the dependent variable, under the hypothesis that it might be influenced by variations in wind speed and temperature.
+
+Regarding the relationship between temperature and precipitation, the data reveals a notable trend: the highest precipitation levels are recorded when temperatures are in the "Mild" range (55-65°F). This pattern is evident in the JFK dataset but is less distinct in the LGA dataset.
+
+When examining the interaction between wind speed and precipitation, the mosaic plots for JFK and LGA display a consistent trend: an increase in wind speed generally correlates with higher levels of precipitation. However, this trend does not apply to the NWK dataset. In NWK, an interesting divergence is observed – at a "Comfortable" temperature range, precipitation levels tend to decrease as wind speed increases, contrasting with the patterns seen in JFK and LGA. This discrepancy highlights the complex and location-specific nature of these environmental variables. 
+
 
 ##Multiple Box-Plot
+```{r}
+sp_data_abb <- sp_data
+sp_data_abb$NAME <- ifelse(sp_data_abb$NAME == "LAGUARDIA AIRPORT, NY US", "LGA", 
+                 ifelse(sp_data_abb$NAME == "NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US", "NWK", "JFK"))
+
+
+boxplot(Temperature ~ NAME, data = sp_data_abb, main = "Boxplot for Temperature", xlab = "Location", ylab = "Temperature")
+boxplot(Precipitation ~ NAME, data = sp_data_abb, main = "Boxplot for Precipitation", xlab = "Location", ylab = "Precipitation")
+boxplot(WindSpeed ~ NAME, data = sp_data_abb, main = "Boxplot for Wind Speed", xlab = "Location", ylab = "Wind Speed")
+```
+
+From the box plot, it's evident that JFK experiences the lowest median temperature and the highest median wind speed among the three locations. Conversely, NWK exhibits the highest median temperature and the lowest median wind speed. In terms of precipitation, a common trend across all three locations is that a majority of the recorded values are zero. Additionally, the presence of outliers in wind speed across all three locations indicates sporadic occurrences of unusually high wind speeds. This could point to infrequent but significant meteorological events or possibly data recording anomalies.
 
 ##Ridgeline
+```{r}
+library(ggridges)
+
+ggplot(sp_data_abb, aes(x = Temperature, y = NAME, fill = NAME)) +
+  geom_density_ridges(alpha = 0.5) +
+  labs(title = "Ridgeline Plot for Temperature", x = "Temperature", y = "Location") +
+  theme_ridges()
+
+ggplot(sp_data_abb, aes(x = Precipitation, y = NAME, fill = NAME)) +
+  geom_density_ridges(alpha = 0.5) +
+  labs(title = "Ridgeline Plot for Precipitation", x = "Precipitation", y = "Location") +
+  theme_ridges()
+
+ggplot(sp_data_abb, aes(x = WindSpeed, y = NAME, fill = NAME)) +
+  geom_density_ridges(alpha = 0.5) +
+  labs(title = "Ridgeline Plot for Wind Speed", x = "Wind Speed", y = "Location") +
+  theme_ridges()
+```
+
+The ridgeline plot analysis largely corroborates the insights gleaned from the boxplot analysis. It reveals that the temperature distributions across all three airports are quite similar, indicating a consistent temperature range. For precipitation, the distributions are heavily skewed to the right, with most values concentrated near zero. This skewness reflects a predominant absence of precipitation, punctuated by occasional higher values. In terms of wind speed, the distribution for NWK is notably more right-skewed compared to JFK and LGA, suggesting a generally lower wind speed at NWK. Additionally, NWK displays a shorter tail in its distribution, indicating fewer instances of extremely high wind speeds compared to the other two airports. This pattern is reflected in NWK's lower median wind speed, as observed in the boxplot analysis.
