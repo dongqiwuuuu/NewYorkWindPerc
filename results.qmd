@@ -14,7 +14,7 @@ library(GGally)
 data_top5 <- read.csv("NY_wind_percip_top5cities.csv")
 ```
 
-##Airport Precipitation Trends
+##Airport Precipitation Monthly Trends
 ```{r}
 Line_data <- data_top5 %>%
   filter(NAME %in% c("LAGUARDIA AIRPORT, NY US", "NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US", "JFK INTERNATIONAL AIRPORT, NY US"))
@@ -38,9 +38,11 @@ ggplot(monthly_avg, aes(x = Month, y = AvgPRCP)) +
        color = "Airport") +
   theme(legend.position = "none")
 ```
-Trends in the above graph: 
+We are interested in comparing the general monthly precipitation trends of the three airports near New York City. The line graph shows similar patterns between the different airports, which is expected given their geographical proximity. These trends align with the historical weather patterns in the region, where the rainy season in New York typically starts in April and continues until June. However, we can still spot abnormal trends in the graph. Notably, there is a peak in precipitation in September at all three locations, which is usually outside the typical rainy season in New York. These observations align with news reports indicating that the total rainfall in September was the second highest in over 150 years in New York.
 
-##Slope Graph
+Apart from the general precipitation pattern, there are slight variations in the trends between the different airports. With other months being roughly equal, precipitation in September at Newark Airport is significantly lower than at the other two airports. This difference could be attributed to the distinct geographic locations of the airports. LaGuardia and JFK are situated on the same peninsula, unlike Newark, which could account for the disparities in precipitation patterns.
+
+##Relationship between Precipitation, Wind, and Temperature
 ```{r}
 #Branching Experiement
 Slope_data <- data_top5 %>%
