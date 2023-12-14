@@ -6,6 +6,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(GGally)
+library(vcd)
 ```
 
 ##Data Proprocessing
@@ -27,16 +28,16 @@ monthly_avg <- Line_data %>%
   summarise(AvgPRCP = mean(PRCP, na.rm = TRUE))
 # Plotting
 ggplot(monthly_avg, aes(x = Month, y = AvgPRCP)) + 
-  geom_line() + 
-  geom_smooth(method = "loess", se = FALSE, span = 0.8) +
+  geom_line(aes(color = "Actual Data")) + 
+  geom_smooth(method = "loess", se = FALSE, span = 0.8, aes(color = "Smoothed Data")) +
   facet_wrap(~ NAME, scales = "fixed", nrow = 3) +
   scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
   theme_minimal() +
   labs(title = "Monthly Average Precipitation for Three Airports",
        x = "Month",
        y = "Average Precipitation",
-       color = "Airport") +
-  theme(legend.position = "none")
+       color = "Line Type") +
+  theme(legend.position = "bottom")
 ```
 We are interested in comparing the general monthly precipitation trends of the three airports near New York City. The line graph shows similar patterns between the different airports, which is expected given their geographical proximity. These trends align with the historical weather patterns in the region, where the rainy season in New York typically starts in April and continues until June. However, we can still spot abnormal trends in the graph. Notably, there is a peak in precipitation in September at all three locations, which is usually outside the typical rainy season in New York. These observations align with news reports indicating that the total rainfall in September was the second highest in over 150 years in New York.
 
@@ -121,7 +122,53 @@ ggplot(heatmap_data, aes(x = Binned_TAVG, y = Binned_PRCP, fill = Frequency)) +
 ```
 The heatmap between temperature and Precipitation across all three airport showed similar distribution patterns. Generally, lower levels of precipitation are common across various temperature ranges. We see that the frequency of occurrences generally decreases as precipitation increases, regardless of temperature.
 
+
+# Plotting the heatmap
+ggplot(heatmap_data, aes(x = Binned_AWND, y = Binned_PRCP, fill = Frequency)) +
+  geom_tile() +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  facet_wrap(~ NAME, scales = "free", nrow = 3) +
+  labs(title = "Precipitation vs Wind Speed for Three Airports",
+       y = "Binned Precipitation (PRCP)",
+       x = "Binned Wind Speed (AWND)",
+       fill = "Frequency") +
+  theme_minimal() +
+  theme(legend.position = "right", 
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
+The above heatmap shows the distribution of Wind Speed and Precipitation. The most frequent occurrences (darkest shade) appear in the lower bins of both wind speed and precipitation, suggesting that lower wind speeds and lower precipitation amounts are most common across all three airports. There are noticeable frequencies in higher wind speed bins (around 16.8-19.1) for the JFK International Airport, independent of precipitation levels, indicating occasional higher wind speeds regardless of rainfall. In contrast, frequencies in high wind speed of Laguardia airport and Newark Airport is low. 
+ 
+```{r, fig.width=5, fig.height=9}
+# Precipitation VS Temperature
+
+# Binning the PRCP and TAVG data
+Heat_data$Binned_PRCP <- cut(Heat_data$PRCP, breaks = 10)
+Heat_data$Binned_TAVG <- cut(Heat_data$TAVG, breaks = 10)
+
+# Creating a new data frame for the heatmap
+heatmap_data <- Heat_data %>%
+  group_by(NAME, Binned_PRCP, Binned_TAVG) %>%
+  summarise(Frequency = n(), .groups = 'drop')  # Counting occurrences
+
+# Plotting the heatmap
+ggplot(heatmap_data, aes(x = Binned_TAVG, y = Binned_PRCP, fill = Frequency)) +
+  geom_tile() +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  facet_wrap(~ NAME, scales = "free", nrow = 3) +
+  labs(title = "Precipitation vs Temperature for Three Airports",
+       y = "Binned Precipitation (PRCP)",
+       x = "Binned Temperature (TAVG)",
+       fill = "Frequency") +
+  theme_minimal() +
+  theme(legend.position = "right", 
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
+The heatmap between temperature and Precipitation across all three airport showed similar distribution patterns. Generally, lower levels of precipitation are common across various temperature ranges. We see that the frequency of occurrences generally decreases as precipitation increases, regardless of temperature.
+
+From this analysis, there is no clear pattern to suggest a strong correlation between temperature and precipitation; instead, each variable seems to vary independently.
+
 There is no clear pattern to suggest a strong correlation between temperature and precipitation; instead, each variable seems to vary independently.
+
 
 ##Scatterplot Matrix
 ```{r}
@@ -150,8 +197,11 @@ sp_lga <- sp_data |>
   dplyr::select(Temperature, Precipitation, WindSpeed)
 plot(sp_lga, pch = 16, cex = .3, main = "Scatterplot Matrix for LGA")
 ```
-Note that after filtering null values, the remaining airports having enough data for this task are just the following three airports: JFK, LGA and NWK. To compare against each other, we created separate scatter plot matrix, though they have similar distributions.
-From the alpha-blended scatter plot matrices of the three selected variables, we observe a potential tri-modal distribution between average temperature and precipitation. It appears that as the temperature increases, precipitation tends to peak in three distinct ranges. Conversely, the relationship between precipitation and average wind speed is less clear. Generally, lower levels of precipitation are observed at extreme wind speeds. However, there is no discernible correlation between average temperature and average wind speed, suggesting these variables may be independent of each other.
+In our comparative analysis using separate scatter plot matrices for the three selected variables, we observe similar distributions across all associations between temperature, precipitation, and wind speed.
+The scatter plots indicate a potential tri-modal distribution between average temperature and precipitation. Specifically, at temperatures around 40°F, 60°F, and 75°F, there is an apparent increase in precipitation levels. This pattern suggests that certain temperature ranges may be associated with heightened precipitation. However, outliers are also present, characterized by extremely low temperatures or exceptionally high precipitation. These outliers hint at sporadic extreme weather conditions, which are consistent across the three airports, likely due to their proximity to each other in the New York area.
+The relationship between precipitation and average wind speed, on the other hand, is more ambiguous. A general trend of lower precipitation at extreme wind speeds is noted, but with the presence of outliers indicating unusually high wind speeds. These deviations suggest occasional instances of strong winds, which may not necessarily correspond with significant precipitation.
+Regarding the correlation between average temperature and average wind speed, the data reveals no obvious linkage, implying a potential independence between these two variables. A notable observation is that extreme wind speeds often coincide with lower temperatures, although this does not establish a causal relationship.
+Overall, while certain patterns and trends are discernible in the data, the presence of outliers and the complexity of environmental variables underscore the nuanced nature of these meteorological phenomena.
 
 ##Mosaic
 ```{r}
