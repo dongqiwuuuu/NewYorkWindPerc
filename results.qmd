@@ -125,7 +125,7 @@ The heatmap between temperature and Precipitation across all three airport showe
 From this analysis, there is no clear pattern to suggest a strong correlation between temperature and precipitation; instead, each variable seems to vary independently.
 
 
-## Distribution pattern among three variables
+##Distribution pattern among three variables
 ```{r}
 sp_data <- data_top5 |> 
   filter(NAME %in% c("LAGUARDIA AIRPORT, NY US", "NEWARK LIBERTY INTERNATIONAL AIRPORT, NJ US", "JFK INTERNATIONAL AIRPORT, NY US")) |> 
@@ -158,7 +158,7 @@ The relationship between precipitation and average wind speed, on the other hand
 Regarding the correlation between average temperature and average wind speed, the data reveals no obvious linkage, implying a potential independence between these two variables. A notable observation is that extreme wind speeds often coincide with lower temperatures, although this does not establish a causal relationship.
 Overall, while certain patterns and trends are discernible in the data, the presence of outliers and the complexity of environmental variables underscore the nuanced nature of these meteorological phenomena.
 
-## Examine the relationship between dependent and independent variables as categorical variables
+##Examine the relationship between dependent and independent variables as categorical variables
 ```{r}
 categorize_data <- function(data) {
   data |> 
@@ -190,7 +190,7 @@ Regarding the relationship between temperature and precipitation, the data revea
 When examining the interaction between wind speed and precipitation, the mosaic plots for JFK and LGA display a consistent trend: an increase in wind speed generally correlates with higher levels of precipitation. However, this trend does not apply to the NWK dataset. In NWK, an interesting divergence is observed – at a "Comfortable" temperature range, precipitation levels tend to decrease as wind speed increases, contrasting with the patterns seen in JFK and LGA. This discrepancy highlights the complex and location-specific nature of these environmental variables. 
 
 
-## Distribution analysis for each variable comparing different airports 
+##Distribution analysis for each variable comparing different airports 
 ```{r}
 sp_data_abb <- sp_data
 sp_data_abb$NAME <- ifelse(sp_data_abb$NAME == "LAGUARDIA AIRPORT, NY US", "LGA", 
@@ -204,7 +204,7 @@ boxplot(WindSpeed ~ NAME, data = sp_data_abb, main = "Boxplot for Wind Speed", x
 
 From the box plot, it's evident that JFK experiences the lowest median temperature and the highest median wind speed among the three locations. Conversely, NWK exhibits the highest median temperature and the lowest median wind speed. In terms of precipitation, a common trend across all three locations is that a majority of the recorded values are zero. Additionally, the presence of outliers in wind speed across all three locations indicates sporadic occurrences of unusually high wind speeds. This could point to infrequent but significant meteorological events or possibly data recording anomalies.
 
-## Another approach to visualize distributions
+##Another approach to visualize distributions
 ```{r}
 library(ggridges)
 

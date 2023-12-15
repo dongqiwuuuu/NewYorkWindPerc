@@ -144,7 +144,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Technical description</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -156,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./d3graph.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Interactive graph</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">d3graph.html</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -171,16 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#distribution-pattern-among-three-variables" id="toc-distribution-pattern-among-three-variables" class="nav-link active" data-scroll-target="#distribution-pattern-among-three-variables"><span class="header-section-number">3.1</span> Distribution pattern among three variables</a></li>
-  <li><a href="#examine-the-relationship-between-dependent-and-independent-variables-as-categorical-variables" id="toc-examine-the-relationship-between-dependent-and-independent-variables-as-categorical-variables" class="nav-link" data-scroll-target="#examine-the-relationship-between-dependent-and-independent-variables-as-categorical-variables"><span class="header-section-number">3.2</span> Examine the relationship between dependent and independent variables as categorical variables</a></li>
-  <li><a href="#distribution-analysis-for-each-variable-comparing-different-airports" id="toc-distribution-analysis-for-each-variable-comparing-different-airports" class="nav-link" data-scroll-target="#distribution-analysis-for-each-variable-comparing-different-airports"><span class="header-section-number">3.3</span> Distribution analysis for each variable comparing different airports</a></li>
-  <li><a href="#another-approach-to-visualize-distributions" id="toc-another-approach-to-visualize-distributions" class="nav-link" data-scroll-target="#another-approach-to-visualize-distributions"><span class="header-section-number">3.4</span> Another approach to visualize distributions</a></li>
-  </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dongqiwuuuu/NewYorkWindPerc.git/edit/main/results.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/dongqiwuuuu/NewYorkWindPerc.git/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -362,8 +353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The heatmap between temperature and Precipitation across all three airport showed similar distribution patterns. Generally, lower levels of precipitation are common across various temperature ranges. We see that the frequency of occurrences generally decreases as precipitation increases, regardless of temperature.</p>
 <p>From this analysis, there is no clear pattern to suggest a strong correlation between temperature and precipitation; instead, each variable seems to vary independently.</p>
-<section id="distribution-pattern-among-three-variables" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="distribution-pattern-among-three-variables"><span class="header-section-number">3.1</span> Distribution pattern among three variables</h2>
+<p>##Distribution pattern among three variables</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -407,9 +397,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>In our comparative analysis using separate scatter plot matrices for the three selected variables, we observe similar distributions across all associations between temperature, precipitation, and wind speed. The scatter plots indicate a potential tri-modal distribution between average temperature and precipitation. Specifically, at temperatures around 40°F, 60°F, and 75°F, there is an apparent increase in precipitation levels. This pattern suggests that certain temperature ranges may be associated with heightened precipitation. However, outliers are also present, characterized by extremely low temperatures or exceptionally high precipitation. These outliers hint at sporadic extreme weather conditions, which are consistent across the three airports, likely due to their proximity to each other in the New York area. The relationship between precipitation and average wind speed, on the other hand, is more ambiguous. A general trend of lower precipitation at extreme wind speeds is noted, but with the presence of outliers indicating unusually high wind speeds. These deviations suggest occasional instances of strong winds, which may not necessarily correspond with significant precipitation. Regarding the correlation between average temperature and average wind speed, the data reveals no obvious linkage, implying a potential independence between these two variables. A notable observation is that extreme wind speeds often coincide with lower temperatures, although this does not establish a causal relationship. Overall, while certain patterns and trends are discernible in the data, the presence of outliers and the complexity of environmental variables underscore the nuanced nature of these meteorological phenomena.</p>
-</section>
-<section id="examine-the-relationship-between-dependent-and-independent-variables-as-categorical-variables" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="examine-the-relationship-between-dependent-and-independent-variables-as-categorical-variables"><span class="header-section-number">3.2</span> Examine the relationship between dependent and independent variables as categorical variables</h2>
+<p>##Examine the relationship between dependent and independent variables as categorical variables</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -453,9 +441,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In this analysis, we transformed the continuous variables into categorical ones by establishing specific thresholds. Precipitation was designated as the dependent variable, under the hypothesis that it might be influenced by variations in wind speed and temperature.</p>
 <p>Regarding the relationship between temperature and precipitation, the data reveals a notable trend: the highest precipitation levels are recorded when temperatures are in the “Mild” range (55-65°F). This pattern is evident in the JFK dataset but is less distinct in the LGA dataset.</p>
 <p>When examining the interaction between wind speed and precipitation, the mosaic plots for JFK and LGA display a consistent trend: an increase in wind speed generally correlates with higher levels of precipitation. However, this trend does not apply to the NWK dataset. In NWK, an interesting divergence is observed – at a “Comfortable” temperature range, precipitation levels tend to decrease as wind speed increases, contrasting with the patterns seen in JFK and LGA. This discrepancy highlights the complex and location-specific nature of these environmental variables.</p>
-</section>
-<section id="distribution-analysis-for-each-variable-comparing-different-airports" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="distribution-analysis-for-each-variable-comparing-different-airports"><span class="header-section-number">3.3</span> Distribution analysis for each variable comparing different airports</h2>
+<p>##Distribution analysis for each variable comparing different airports</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -485,9 +471,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>From the box plot, it’s evident that JFK experiences the lowest median temperature and the highest median wind speed among the three locations. Conversely, NWK exhibits the highest median temperature and the lowest median wind speed. In terms of precipitation, a common trend across all three locations is that a majority of the recorded values are zero. Additionally, the presence of outliers in wind speed across all three locations indicates sporadic occurrences of unusually high wind speeds. This could point to infrequent but significant meteorological events or possibly data recording anomalies.</p>
-</section>
-<section id="another-approach-to-visualize-distributions" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="another-approach-to-visualize-distributions"><span class="header-section-number">3.4</span> Another approach to visualize distributions</h2>
+<p>##Another approach to visualize distributions</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -534,7 +518,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The ridgeline plot analysis largely corroborates the insights gleaned from the boxplot analysis. It reveals that the temperature distributions across all three airports are quite similar, indicating a consistent temperature range. For precipitation, the distributions are heavily skewed to the right, with most values concentrated near zero. This skewness reflects a predominant absence of precipitation, punctuated by occasional higher values. In terms of wind speed, the distribution for NWK is notably more right-skewed compared to JFK and LGA, suggesting a generally lower wind speed at NWK. Additionally, NWK displays a shorter tail in its distribution, indicating fewer instances of extremely high wind speeds compared to the other two airports. This pattern is reflected in NWK’s lower median wind speed, as observed in the boxplot analysis.</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -773,12 +756,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./data.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Technical description</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./d3graph.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Interactive graph</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">d3graph.html</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -790,7 +773,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dongqiwuuuu/NewYorkWindPerc.git/edit/main/results.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/dongqiwuuuu/NewYorkWindPerc.git/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>
