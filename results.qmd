@@ -175,13 +175,13 @@ cat_lga <- categorize_data(sp_lga)
 
 
 mosaic(Precipitation ~ Temperature + WindSpeed, data = cat_jfk,  
-       direction = c("v", "v", "h"), main = "Combined Mosaic Plot for JFK", rot_labels=c(0,0,45,90), highlighting_fill=c("cyan","lightblue", "cornflowerblue", "navy"))
+       direction = c("v", "v", "h"), main = "Combined Mosaic Plot for JFK", rot_labels=c(0,0,45,45), highlighting_fill=c("cyan","lightblue", "cornflowerblue", "navy"))
 
 mosaic(Precipitation ~ Temperature + WindSpeed, data = cat_nwk,  
-       direction = c("v", "v", "h"), main = "Combined Mosaic Plot for NWK", rot_labels=c(0,0,45,90), highlighting_fill=c("cyan","lightblue", "cornflowerblue", "navy"))
+       direction = c("v", "v", "h"), main = "Combined Mosaic Plot for NWK", rot_labels=c(0,0,45,45), highlighting_fill=c("cyan","lightblue", "cornflowerblue", "navy"))
 
 mosaic(Precipitation ~ Temperature + WindSpeed, data = cat_lga,  
-       direction = c("v", "v", "h"), main = "Combined Mosaic Plot for LGA", rot_labels=c(0,0,45,90), highlighting_fill=c("cyan","lightblue", "cornflowerblue", "navy"))
+       direction = c("v", "v", "h"), main = "Combined Mosaic Plot for LGA", rot_labels=c(0,0,45,45), highlighting_fill=c("cyan","lightblue", "cornflowerblue", "navy"))
 ```
 In this analysis, we transformed the continuous variables into categorical ones by establishing specific thresholds. Precipitation was designated as the dependent variable, under the hypothesis that it might be influenced by variations in wind speed and temperature.
 

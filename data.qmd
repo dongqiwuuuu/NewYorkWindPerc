@@ -1,4 +1,5 @@
-# Technical description
+# Data
+## Technical Description
 For our research project, we choose to use Global Historical Climatology Network (GHCN)-Daily Dataset. It is a composite dataset comprising climate records from numerous sources worldwide. These records are merged and subjected to quality assurance reviews. The dataset is maintained by the National Oceanic and Atmospheric Administration (NOAA). 
 
 The data we get from NOAA data source is in csv format. The data is distributed typically with one row per observation, indicating one observation per day. We choose to use the date range between 2023-01-01 to 2023-11-27 for analysis of the most current trend in atmosphere. Updates of the dataset are made in either several days or a week, ensuring a near-real-time data feed. 
